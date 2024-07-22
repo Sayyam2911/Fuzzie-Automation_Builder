@@ -98,9 +98,6 @@ const MenuOptions = (props : Props) => {
                     </div>
                 </div>
             </div>
-            <div className={"flex items-center justify-center flex-col gap-6"}>
-                Theme
-            </div>
         </nav>
     )
 }
