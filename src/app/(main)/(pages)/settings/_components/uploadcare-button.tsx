@@ -1,45 +1,39 @@
-'use client';
-import * as LR from '@uploadcare/blocks'
-import {useRouter} from "next/navigation";
-import {useEffect, useRef} from "react";
+import React, { useState } from 'react';
+import { FileUploaderRegular } from '@uploadcare/react-uploader';
+import '@uploadcare/react-uploader/core.css';
+import { useRouter } from 'next/navigation';
 
-type UploadcareButtonProps = {
-    onUpload : (e: string) => any
-}
+function UploadCareButton({ onUpload } : any) {
+    const [files, setFiles] = useState([]);
+    const router = useRouter();
 
-LR.registerBlocks(LR)
+    const handleChangeEvent = async (items : any) => {
+        const successfulFiles = items.allEntries.filter((file : any) => file.status === 'success');
+        setFiles(successfulFiles);
 
-const UploadcareButton = ({onUpload}: UploadcareButtonProps) => {
-    const router = useRouter()
-    const ctxProviderRef = useRef<typeof LR.UploadCtxProvider.prototype & LR.UploadCtxProvider>(null)
-
-    useEffect(() => {
-        const handleUpload = async(e : any) => {
-            const file = await onUpload(e.detail.cdnUrl)
-            if(file){
-                router.refresh()
+        for (const file of successfulFiles) {
+            const uploadedFile = await onUpload(file.cdnUrl);
+            if (uploadedFile) {
+                router.refresh();
             }
         }
-        // @ts-ignore
-        ctxProviderRef.current.addEventListener('file-upload-success', handleUpload)
-    },[])
+    };
 
-    return <div>
-        <lr-config
-            ctx-name="my-uploader"
-            pubkey="85e7d53ba07e524034f9"
-        />
-
-        <lr-file-uploader-regular
-            ctx-name="my-uploader"
-            css-src={`https://cdn.jsdelivr.net/npm/@uploadcare/blocks@0.35.2/web/lr-file-uploader-regular.min.css`}
-        />
-
-        <lr-upload-ctx-provider
-            ctx-name="my-uploader"
-            ref={ctxProviderRef}
-        />
-    </div>
+    return (
+        <div>
+            <FileUploaderRegular
+                onChange={handleChangeEvent}
+                pubkey="a9428ff5ff90ae7a64eb"
+            />
+            <div>
+                {files.map((file: any) => (
+                    <div key={file.uuid}>
+                        <img src={file.cdnUrl} alt={file.fileInfo.originalFilename} />
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
 }
 
-export default UploadcareButton;
+export default UploadCareButton;

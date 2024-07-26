@@ -5,7 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import React from "react";
 
-require('dotenv').config({ path: './.env.local' });
+require('dotenv').config({ path: './.env' });
 
 
 const font = DM_Sans({ subsets: ["latin"] });
@@ -22,7 +22,7 @@ export default function RootLayout({
 }) {
 
     return (
-        <ClerkProvider publishableKey={"pk_test_dW5jb21tb24tbXVzdGFuZy01LmNsZXJrLmFjY291bnRzLmRldiQ"}>
+        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
             <html lang="en">
             <body className={font.className}>
             <ThemeProvider
