@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import React from "react";
+import ModalProvider from "@/providers/modal-provider";
 
 require('dotenv').config({ path: './.env' });
 
@@ -31,7 +32,9 @@ export default function RootLayout({
                 enableSystem
                 disableTransitionOnChange
             >
-                {children}
+                <ModalProvider>
+                    {children}
+                </ModalProvider>
             </ThemeProvider>
             </body>
             </html>
