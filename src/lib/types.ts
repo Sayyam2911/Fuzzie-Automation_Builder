@@ -24,7 +24,7 @@ export type Connection = {
     slackSpecial ?: boolean,
 }
 
-export type EditorCanvasType = 'Email' | 'Condition' | 'AI' | 'Slack' | 'Google Drive' | 'Notion' | 'Custom Webhook' | 'Google Calender' | 'Trigger' | 'Action' | 'Wait';
+export type EditorCanvasType = 'Email' | 'Condition' | 'AI' | 'Slack' | 'Google Drive' | 'Notion' | 'Custom Webhook' | 'Google Calendar' | 'Trigger' | 'Action' | 'Wait';
 
 export type EditorCanvasCardType = {
     title : string,

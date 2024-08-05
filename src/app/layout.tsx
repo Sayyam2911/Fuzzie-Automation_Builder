@@ -5,9 +5,9 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import React from "react";
 import ModalProvider from "@/providers/modal-provider";
+import {Toaster} from "@/components/ui/sonner";
 
 require('dotenv').config({ path: './.env' });
-
 
 const font = DM_Sans({ subsets: ["latin"] });
 
@@ -15,7 +15,6 @@ export const metadata: Metadata = {
     title: "Fuzzie",
     description: "Automate Your Workflows With Fuzzie",
 };
-
 export default function RootLayout({
                                        children,
                                    }: {
@@ -34,6 +33,7 @@ export default function RootLayout({
             >
                 <ModalProvider>
                     {children}
+                    <Toaster/>
                 </ModalProvider>
             </ThemeProvider>
             </body>
