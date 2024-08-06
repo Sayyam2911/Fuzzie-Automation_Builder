@@ -21,4 +21,17 @@ model User{
   profileImage String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  workflows Workflows[]
+}
+
+model Workflows{
+  id String @id @default(uuid())
+  nodes String?
+  edges String?
+  name String
+  flowPath String?
+  publish Boolean? @default(false)
+  User User @relation(fields: [userId], references: [clerkId])
+  userId String
 }

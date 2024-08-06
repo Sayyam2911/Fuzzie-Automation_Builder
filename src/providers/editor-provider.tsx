@@ -93,16 +93,15 @@ const editorReducer = (
             }
             return state;
 
-        case "LOAD_DATA":
+        case 'LOAD_DATA':
             return {
                 ...state,
-                editor : {
+                editor: {
                     ...state.editor,
-                    elements : action.payload.elements || InitialEditorState.elements,
-                    edges : action.payload.edges || InitialEditorState.edges
-                }
+                    elements: action.payload.elements || [],
+                    edges: action.payload.edges,
+                },
             }
-
         case "SELECTED_ELEMENT":
             return {
                 ...state,
