@@ -12,6 +12,8 @@ import EditorCanvasCardIconHelper
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
 import RenderConnectionAccordion
     from "@/app/(main)/(pages)/workflows/editor/[editorId]/_components/render-connection-accordion";
+import RenderOutputAccordion
+    from "@/app/(main)/(pages)/workflows/editor/[editorId]/_components/render-output-accordion";
 
 type Props = {
     nodes: EditorNodeType[]
@@ -62,7 +64,7 @@ const EditorCanvasSidebar = ({nodes}: Props) => {
                 </div>
                 <Accordion type={'multiple'}>
                     <AccordionItem value={'Options'} className={'border-y-[1px] px-2'}>
-                        <AccordionTrigger className={'!no-underline'}>
+                        <AccordionTrigger className={'!no-underline px-1'}>
                             Account
                         </AccordionTrigger>
                         <AccordionContent>
@@ -74,6 +76,15 @@ const EditorCanvasSidebar = ({nodes}: Props) => {
                                />
                             ))}{' '}
                         </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value={'Expected Output'} className={'px-2'}>
+                        <AccordionTrigger className={"!no-underline"}>
+                            Action
+                        </AccordionTrigger>
+                        <RenderOutputAccordion
+                            state={state}
+                            nodeConnection={nodeConnection}
+                        />
                     </AccordionItem>
                 </Accordion>
             </TabsContent>
