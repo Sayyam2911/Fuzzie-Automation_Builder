@@ -1,5 +1,5 @@
 'use client';
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {usePathname} from "next/navigation";
 import {useNodeConnections} from "@/providers/connections-provider";
 import {Button} from "@/components/ui/button";
@@ -31,6 +31,21 @@ const FlowInstance = ({children,nodes,edges}: Props) => {
         const response = await onFlowPublish(pathName.split('/').pop()!,true)
         if(response) toast.message(response.message)
     },[])
+
+    const onAutomateFlow = async() => {
+        const flow : any = []
+        const connectedEdges = edges.map((edge) => edge.target)
+        connectedEdges.map((target) => {
+            nodes.forEach((node) => {
+                if(node.id === target) flow.push(node.type)
+            })
+        })
+        setFlow(flow)
+    }
+
+    useEffect(() => {
+        onAutomateFlow()
+    }, [edges]);
 
     return <div className={"flow flow-col gap-2"}>
         <div className={"flex gap-3 p-4"}>
