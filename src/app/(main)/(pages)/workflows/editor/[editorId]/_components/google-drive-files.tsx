@@ -8,7 +8,7 @@ import {Button} from "@/components/ui/button";
 import {CardContainer} from "@/components/global/3d-card";
 
 const GoogleDriveFiles = () => {
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     const [isListening, setIsListening] = useState(false)
 
     const reqGoogle = async() => {

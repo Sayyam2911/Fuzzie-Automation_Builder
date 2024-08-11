@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {Separator} from "@/components/ui/separator";
 import {CONNECTIONS, EditorCanvasDefaultCardTypes} from "@/lib/constant";
 import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {onConnections, onDragStart} from "@/lib/editor-utils";
+import {fetchBotSlackChannels, onConnections, onDragStart} from "@/lib/editor-utils";
 import EditorCanvasCardIconHelper
     from "@/app/(main)/(pages)/workflows/editor/[editorId]/_components/editor-canvas-card-icon-helper";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
@@ -29,6 +29,12 @@ const EditorCanvasSidebar = ({nodes}: Props) => {
     useEffect(() => {
         onConnections(nodeConnection, state, googleFile);
     },[state])
+
+    useEffect(() => {
+        if(nodeConnection.slackNode.slackAccessToken) {
+            fetchBotSlackChannels(nodeConnection.slackNode.slackAccessToken,setSlackChannels)
+        }
+    },[nodeConnection])
 
     return <aside>
         <Tabs defaultValue={"actions"} className={"h-screen overflow-scroll pb-24"}>

@@ -4,7 +4,8 @@ import React from "react";
 import {EditorState} from "@/providers/editor-provider";
 import {getDiscordConnectionUrl} from "@/app/(main)/(pages)/connections/_actions/discord-connection";
 import {getNotionConnection, getNotionDatabase} from "@/app/(main)/(pages)/connections/_actions/notion-connections";
-import {getSlackConnection} from "@/app/(main)/(pages)/connections/_actions/slack-connections";
+import {getSlackConnection, listBotChannels} from "@/app/(main)/(pages)/connections/_actions/slack-connections";
+import {Option} from "@/store";
 
 export const onDragStart = (
     event: any,
@@ -134,4 +135,11 @@ export const onConnections = async (
             })
         }
     }
+}
+
+export const fetchBotSlackChannels = async (
+    token : string,
+    setSlackChannels : (slackChannels : Option[]) => void
+) => {
+    await listBotChannels(token)?.then((channels) => setSlackChannels(channels))
 }
