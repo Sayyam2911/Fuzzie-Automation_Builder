@@ -6,7 +6,6 @@ import {onDiscordConnect} from "@/app/(main)/(pages)/connections/_actions/discor
 import {onNotionConnect} from "@/app/(main)/(pages)/connections/_actions/notion-connections";
 import {onSlackConnect} from "@/app/(main)/(pages)/connections/_actions/slack-connections";
 import {getUserData} from "@/app/(main)/(pages)/connections/_actions/get-user";
-//import onDiscordConnect from "@/app/(main)/(pages)/connections/_actions/discord-connection";
 
 type ConnectionsProps = {
     searchParams ?: {[key : string] : string | undefined}
