@@ -8,6 +8,9 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {Loader2} from "lucide-react";
+import {toast} from "sonner";
+import {onCreateWorkflow} from "@/app/(main)/(pages)/workflows/_actions/workflow-connections";
+import {useModal} from "@/providers/modal-provider";
 
 type WorkflowFormProps = {
     title ?: string,
@@ -15,6 +18,7 @@ type WorkflowFormProps = {
 }
 
 const WorkflowForm = ({title,subTitle} : WorkflowFormProps) => {
+    const {setClose} = useModal()
     const form = useForm<z.infer<typeof WorkflowFormSchema>>({
         mode : 'onChange',
         resolver : zodResolver(WorkflowFormSchema),
@@ -28,11 +32,17 @@ const WorkflowForm = ({title,subTitle} : WorkflowFormProps) => {
     const router = useRouter()
 
     const handleSubmit = async (values : z.infer<typeof WorkflowFormSchema>) => {
-
+        console.log("It is reaching handle submit")
+        const workflow = await onCreateWorkflow(values.name,values.description)
+        if(workflow){
+            toast.message(workflow.message);
+            router.refresh()
+        }
+        setClose()
     }
 
     return (
-        <Card className={'w-full max-w-[650px] border-none'}>
+        <Card className="w-full max-w-[650px] border-none">
             {title && subTitle && (
                 <CardHeader>
                     <CardTitle>{title}</CardTitle>
@@ -41,57 +51,58 @@ const WorkflowForm = ({title,subTitle} : WorkflowFormProps) => {
             )}
             <CardContent>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleSubmit)} className={"flex flex-col gap-4 text-left py-4"}>
+                    <form
+                        onSubmit={form.handleSubmit(handleSubmit)}
+                        className="flex flex-col gap-4 text-left"
+                    >
                         <FormField
                             disabled={isLoading}
                             control={form.control}
                             name="name"
-                            render={({field}) => (
+                            render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className={"text-lg"}>Workflow Name</FormLabel>
+                                    <FormLabel>Name</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
-                                            placeholder={"Name"}
+                                            placeholder="Name"
                                         />
                                     </FormControl>
-                                    <FormMessage/>
+                                    <FormMessage />
                                 </FormItem>
                             )}
                         />
-                    </form>
-                    <form onSubmit={form.handleSubmit(handleSubmit)} className={"flex flex-col gap-4 text-left"}>
                         <FormField
                             disabled={isLoading}
                             control={form.control}
                             name="description"
-                            render={({field}) => (
+                            render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className={"text-lg"}>Workflow Description</FormLabel>
+                                    <FormLabel>Description</FormLabel>
                                     <FormControl>
                                         <Input
+                                            placeholder="Description"
                                             {...field}
-                                            placeholder={"Description"}
                                         />
                                     </FormControl>
-                                    <FormMessage/>
+                                    <FormMessage />
                                 </FormItem>
                             )}
                         />
-                    </form>
-                    <Button
-                        className={"mt-4"}
-                        disabled={isLoading}
-                        type={"submit"}
+                        <Button
+                            className="mt-4"
+                            disabled={isLoading}
+                            type="submit"
                         >
-                        {isLoading ?
-                            <>
-                                <Loader2 className={'mr-2 h-4 w-4 animate-spin'}/>
-                                Saving
-                            </>
-                             : ('Save Workflow Settings')
-                        }
-                    </Button>
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-3 animate-spin" /> Saving
+                                </>
+                            ) : (
+                                'Save Settings'
+                            )}
+                        </Button>
+                    </form>
                 </Form>
             </CardContent>
         </Card>

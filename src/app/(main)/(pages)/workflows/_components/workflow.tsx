@@ -12,10 +12,10 @@ type Props = {
     name : string,
     description : string,
     id : string,
-    published : boolean | null
+    publish : boolean | null
 }
 
-const Workflow = ({name,description,id,published} : Props) => {
+const Workflow = ({name,description,id,publish} : Props) => {
 
     const onPublishFlow = async(event : any) => {
         const response = await onFlowPublish(
@@ -66,11 +66,11 @@ const Workflow = ({name,description,id,published} : Props) => {
         </CardHeader>
         <div className={"flex flex-col items-center gap-2 p-4"}>
             <Label className={"text-muted-foreground"} htmlFor={"airplane-mode"}>
-                {published! ? 'On' : 'Off'}
+                {publish! ? 'On' : 'Off'}
             </Label>
             <Switch id={"airplane-mode"}
                     onClick={onPublishFlow}
-                    defaultChecked={published!}
+                    defaultChecked={publish!}
             />
         </div>
     </Card>

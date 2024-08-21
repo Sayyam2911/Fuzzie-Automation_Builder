@@ -22,6 +22,7 @@ import {v4} from 'uuid'
 import {EditorCanvasDefaultCardTypes} from "@/lib/constant";
 import FlowInstance from "@/app/(main)/(pages)/workflows/editor/[editorId]/_components/flow-instance";
 import EditorCanvasSidebar from "@/app/(main)/(pages)/workflows/editor/[editorId]/_components/editor-canvas-sidebar";
+import { onGetNodesEdges } from '../../../_actions/workflow-connections'
 
 const InitialNodes : EditorNodeType[] = []
 const InitialEdges : {id : string, source : string, target : string}[] = []
@@ -51,6 +52,21 @@ const EditorCanvas = () => {
         }),
         []
     );
+
+    const onGetWorkFlow = async () => {
+        setIsWorkflowLoading(true)
+        const response = await onGetNodesEdges(pathName.split('/').pop()!)
+        if (response) {
+            setEdges(JSON.parse(response.edges!))
+            setNodes(JSON.parse(response.nodes!))
+            setIsWorkflowLoading(false)
+        }
+        setIsWorkflowLoading(false)
+    }
+
+    useEffect(() => {
+        onGetWorkFlow()
+    }, [])
 
     const onNodesChange = useCallback((changes : NodeChange[]) => {
         //@ts-ignore

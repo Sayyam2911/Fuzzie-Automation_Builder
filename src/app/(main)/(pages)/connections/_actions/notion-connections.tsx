@@ -77,7 +77,7 @@ export const getNotionDatabase = async (
 export const onCreateNewPageInDatabase = async (
     databaseId: string,
     accessToken: string,
-    content: string
+    content: any
 ) => {
     const notion = new Client({
         auth: accessToken,
@@ -90,10 +90,10 @@ export const onCreateNewPageInDatabase = async (
             database_id: databaseId,
         },
         properties: {
-            name: [
+            Name: [
                 {
                     text: {
-                        content: content,
+                        content: JSON.stringify(content),
                     },
                 },
             ],

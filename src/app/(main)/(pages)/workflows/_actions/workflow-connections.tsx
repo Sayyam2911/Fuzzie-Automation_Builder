@@ -1,5 +1,5 @@
 'use server';
-import {auth} from "@clerk/nextjs/server";
+import {auth, currentUser} from "@clerk/nextjs/server";
 import {db} from "@/lib/db";
 import {Option} from "@/store";
 
@@ -131,4 +131,44 @@ export const onCreateNodeTemplate = async (
 
         if (response) return 'Notion template saved'
     }
+}
+
+export const onGetWorkflow = async () => {
+    const user = await currentUser()
+    if(user){
+        const workflows = await db.workflows.findMany({
+            where : {
+                userId : user.id
+            }
+        })
+        if(workflows) return workflows
+    }
+}
+
+export const onCreateWorkflow = async (name: string, description: string) => {
+    const user = await currentUser()
+    if(user){
+        const workflow = await db.workflows.create({
+            data : {
+                name,
+                description,
+                userId : user.id
+            }
+        })
+        if(workflow) return {message : "Workflow Created Successfully"}
+        return {message : "Oops! Try Again"}
+    }
+}
+
+export const onGetNodesEdges = async (flowId: string) => {
+    const nodesEdges = await db.workflows.findUnique({
+        where: {
+            id: flowId,
+        },
+        select: {
+            nodes: true,
+            edges: true,
+        },
+    })
+    if (nodesEdges?.nodes && nodesEdges?.edges) return nodesEdges
 }
